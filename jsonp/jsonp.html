@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jsonp的实现方式</title>
+</head>
+
+<body>
+<div id="result"></div>
+<script>
+    /*var localHandler = function (data) {
+        console.log(data)
+        alert('我是本地函数，可以被跨域的remote.js文件调用，远程js带来的数据是：' + data.result)
+    };*/
+    // 得到航班信息查询结果后的回调函数
+    var flightHandler = function(data){
+        console.log('你查询的航班结果是：票价 ' + data.price + ' 元，' + '余票 ' + data.tickets + ' 张。');
+    };
+    // 提供jsonp服务的url地址（不管是什么类型的地址，最终生成的返回值都是一段javascript代码）
+    var url = "http://localhost/mytest/js/index.php?code=CA1998&callback=flightHandler";
+    // 创建script标签，设置其属性
+    var script = document.createElement('script');
+    script.setAttribute('src', url);
+    // 把script标签加入head，此时调用开始
+    document.getElementsByTagName('head')[0].appendChild(script);
+</script>
+<!--<script src="http://localhost/mytest/js/jsonp.js"></script>-->
+
+<!--<script src="jsonp.js"></script>-->
+<script src="test.js"></script>
+<script>
+    (function () {
+        myJsonp(//地址
+            'http://api.douban.com/v2/movie/in_theaters',
+            //传递的参数
+            {
+                count: 10, start: 5
+            },
+            //回调函数
+            function (data) {
+                document.getElementById('result').innerHTML = JSON.stringify(data);
+            }
+        );
+    })();
+
+</script>
+
+
+</body>
+</html>
